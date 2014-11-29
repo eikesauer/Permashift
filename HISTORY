@@ -1,0 +1,39 @@
+VDR Plugin 'permashift' Revision History
+---------------------------------------------------
+
+2014-08-16: Version 1.0.0
+
+- Finally release version 1.0
+
+2014-05-24: Version 1.0.0b3
+
+- Fixed 64 bit issues for buffers >= 2 GB
+
+2014-05-24: Version 1.0.0b1
+
+- Quick rewinding into buffer implemented. Beta version.
+
+2014-02-24: Version 0.6.0b1
+
+- Rewrote Permashift to use memory buffer, beta version
+
+2013-04-03: Version 0.5.3
+
+- Length of permanent timeshift recording wasn't restored on restart; 
+  thanks to MegaX at vdr-portal for finding the bug
+
+2013-03-30: Version 0.5.2
+
+- Length of permanent timeshift recording changeable by user between 1 and 23 hours.
+- i18n implemented, translated user visible strings to German.
+
+2013-01-19: Version 0.5.1
+
+- Moved stuff to allow automatic shutdown from VDR patch to plugin.
+  Now the plugin asks the user if it should continue to record if he has been inactive too long.
+  If the user does not react, permanent timeshift is stopped (thus markad stops to work at its 
+  recording as well) and shutdown may take place. Thanks to mini73 at VDR Portal for his suggestions.
+
+2013-01-05: Version 0.5.0beta2
+
+- Initial public revision.

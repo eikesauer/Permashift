@@ -9,8 +9,8 @@
 #include "permashift.h"
 #include "bufferreceiver.h"
 
-static const char *VERSION        = "1.0.0";
-static const char *DESCRIPTION    = trNOOP("Automatically record live TV");
+static const char *VERSION        = "1.0.1";
+static const char *DESCRIPTION    = trNOOP("Auto-buffer live TV");
 
 
 // #define EXPIRECANCELPROMPT    5 // seconds to wait in user prompt before expiring recording
@@ -244,12 +244,12 @@ cMenuSetupLR::cMenuSetupLR()
 			newBufferSizeIndex = i;
 		}
 	}
-	newSaveOnTheFly = g_saveOnTheFly;
+	newSaveBlocksRewind = !g_saveOnTheFly;
 
 	Add(new cMenuEditBoolItem(tr("Enable plugin"), &newEnablePlugin));
 	// obsolete		Add(new cMenuEditIntItem(tr("Maximum recording length (hours)"), &newMaxLength, 1, 23));
 	Add(new cMenuEditStraItem(tr("Memory buffer size"), &newBufferSizeIndex, bufferSizeCount, bufferSizeTexts));
-	Add(new cMenuEditBoolItem(tr("Save buffer on-the-fly"), &newSaveOnTheFly));
+	Add(new cMenuEditBoolItem(tr("Saving buffer blocks rewinding"), &newSaveBlocksRewind));
 }
 
 void cMenuSetupLR::Store(void)
@@ -257,7 +257,7 @@ void cMenuSetupLR::Store(void)
 	g_enablePlugin = newEnablePlugin;
 	// obsolete		g_maxLength = newMaxLength;
 	g_bufferSize = bufferSizesInMB[newBufferSizeIndex];
-	g_saveOnTheFly = newSaveOnTheFly;
+	g_saveOnTheFly = !newSaveBlocksRewind;
 
 	SetupStore(MenuEntry_EnablePlugin, newEnablePlugin);
 	// obsolete		SetupStore(MenuEntry_MaxLength, newMaxLength);

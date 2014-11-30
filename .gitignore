@@ -1,3 +1,10 @@
+# eclipse stuff?
+.dependencies
+# backups
+*~
+# compiled po files
+*.mo
+
 # Compiled Object files
 *.slo
 *.lo

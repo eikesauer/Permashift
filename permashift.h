@@ -23,7 +23,7 @@ private:
 	int newEnablePlugin;
 	// obsolete int newMaxLength;
 	int newBufferSizeIndex;
-	int newSaveOnTheFly;
+	int newSaveBlocksRewind;
 
 protected:
 	virtual void Store(void);

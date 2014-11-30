@@ -1,6 +1,20 @@
 VDR Plugin 'permashift' Revision History
 ---------------------------------------------------
 
+2014-11-30: Version 1.0.1
+
+- Fixed bug sending way too many syslog messages when buffer is full. 
+  Thanks to 'z421' at vdr-portal.de for pointing out.
+- Reversed the logic of the save on-the-fly option, so hopefully it is 
+  easier to understand.
+- Changed VDR patch to avoid using default parameters for methods, 
+  so this version should be easier to patch and integrate (no rebuilding
+  of other plugins anymore)
+- Additional translations:
+  * Russian by Walter T.
+  * Finish by Marko Mäkelä
+  * Dutch by Cedric Dewijs
+
 2014-08-16: Version 1.0.0
 
 - Finally release version 1.0
@@ -16,6 +30,15 @@ VDR Plugin 'permashift' Revision History
 2014-02-24: Version 0.6.0b1
 
 - Rewrote Permashift to use memory buffer, beta version
+
+2013-05-28: Version 0.5.4
+
+- Plugin waited too long for user input when inactivity was due
+  (resulting in a watchdog panic), and it didn't reset activity state.
+- Power button didn't (easily) power down VDR, this was a regression in 
+  version 0.5.1.
+- Thanks to MegaX at vdr-portal for bugging me until I fixed these bugs.
+- Only accept timeshift length if it's a number (thanks to mini73).
 
 2013-04-03: Version 0.5.3
 

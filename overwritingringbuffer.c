@@ -71,7 +71,7 @@ void cOverwritingRingBuffer::WriteData(uchar* Data, uint64_t Length)
 	// debug buffer state
 	if (m_dataLength / (100ull * 1024 * 1024) >  previousDataLength / (100ull * 1024 * 1024))
 	{
-		dsyslog("permashift: %d MB live video data in buffer \n", 100 * (uint)(previousDataLength / (100ull * 1024 * 1024)));
+		dsyslog("permashift: %d MB live video data in buffer \n", 100 * (uint)(m_dataLength / (100ull * 1024 * 1024)));
 	}
 }
 

@@ -1,6 +1,10 @@
 VDR Plugin 'permashift' Revision History
 ---------------------------------------------------
 
+2015-02-28: Version 1.0.2
+
+- added patch for new stable VDR series 2.2
+
 2014-11-30: Version 1.0.1
 
 - Fixed bug sending way too many syslog messages when buffer is full. 

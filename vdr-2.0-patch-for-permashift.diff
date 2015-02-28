@@ -1,5 +1,5 @@
---- vdr-2.0.5-original/device.h	2014-03-20 19:53:17.293197434 +0100
-+++ vdr-2.0/device.h	2014-11-11 16:04:43.928378788 +0100
+--- vdr-2.0.7-original/device.h	2013-08-22 14:01:48.000000000 +0200
++++ vdr-2.0.7/device.h	2015-02-28 12:30:32.951912587 +0100
 @@ -87,6 +87,7 @@ struct tTrackId {
  
  class cPlayer;
@@ -17,9 +17,9 @@
    void Detach(cReceiver *Receiver);
         ///< Detaches the given receiver from this device.
    void DetachAll(int Pid);
---- vdr-2.0.5-original/device.c	2014-03-20 19:53:17.293197434 +0100
-+++ vdr-2.0/device.c	2014-09-11 18:55:49.485113436 +0200
-@@ -1717,6 +1717,17 @@ void cDevice::DetachAllReceivers(void)
+--- vdr-2.0.7-original/device.c	2014-03-11 10:29:52.000000000 +0100
++++ vdr-2.0.7/device.c	2015-02-28 12:30:32.955912572 +0100
+@@ -1718,6 +1718,17 @@ void cDevice::DetachAllReceivers(void)
        Detach(receiver[i]);
  }
  
@@ -37,8 +37,8 @@
  // --- cTSBuffer -------------------------------------------------------------
  
  cTSBuffer::cTSBuffer(int File, int Size, int CardIndex)
---- vdr-2.0.5-original/dvbplayer.h	2014-03-20 19:53:17.289197420 +0100
-+++ vdr-2.0/dvbplayer.h	2014-11-11 14:20:33.437935305 +0100
+--- vdr-2.0.7-original/dvbplayer.h	2012-02-19 12:40:36.000000000 +0100
++++ vdr-2.0.7/dvbplayer.h	2015-02-28 12:30:32.955912572 +0100
 @@ -15,6 +15,14 @@
  
  class cDvbPlayer;
@@ -63,8 +63,8 @@
    virtual ~cDvbPlayerControl();
    bool Active(void);
    void Stop(void);
---- vdr-2.0.5-original/dvbplayer.c	2014-03-20 19:53:17.289197420 +0100
-+++ vdr-2.0/dvbplayer.c	2014-11-11 14:42:11.533211364 +0100
+--- vdr-2.0.7-original/dvbplayer.c	2013-03-08 14:44:19.000000000 +0100
++++ vdr-2.0.7/dvbplayer.c	2015-02-28 12:30:32.955912572 +0100
 @@ -216,13 +216,14 @@ private:
    cUnbufferedFile *replayFile;
    double framesPerSecond;
@@ -178,8 +178,8 @@
  cDvbPlayerControl::~cDvbPlayerControl()
  {
    Stop();
---- vdr-2.0.5-original/menu.h	2014-03-20 19:53:17.289197420 +0100
-+++ vdr-2.0/menu.h	2014-11-11 14:43:52.300890535 +0100
+--- vdr-2.0.7-original/menu.h	2013-10-16 11:46:15.000000000 +0200
++++ vdr-2.0.7/menu.h	2015-02-28 12:30:32.955912572 +0100
 @@ -225,6 +225,8 @@ private:
    bool GetEvent(void);
  public:
@@ -209,9 +209,9 @@
    virtual ~cReplayControl();
    void Stop(void);
    virtual cOsdObject *GetInfo(void);
---- vdr-2.0.5-original/menu.c	2014-03-20 19:53:17.293197434 +0100
-+++ vdr-2.0/menu.c	2014-11-11 17:54:48.387275122 +0100
-@@ -4165,6 +4165,16 @@ eOSState cDisplaySubtitleTracks::Process
+--- vdr-2.0.7-original/menu.c	2015-01-13 10:52:59.000000000 +0100
++++ vdr-2.0.7/menu.c	2015-02-28 12:30:32.955912572 +0100
+@@ -4179,6 +4179,16 @@ eOSState cDisplaySubtitleTracks::Process
  
  cRecordControl::cRecordControl(cDevice *Device, cTimer *Timer, bool Pause)
  {
@@ -228,7 +228,7 @@
    // Whatever happens here, the timers will be modified in some way...
    Timers.SetModified();
    // We're going to manipulate an event here, so we need to prevent
-@@ -4186,6 +4196,7 @@ cRecordControl::cRecordControl(cDevice *
+@@ -4200,6 +4210,7 @@ cRecordControl::cRecordControl(cDevice *
    timer->SetPending(true);
    timer->SetRecording(true);
    event = timer->Event();
@@ -236,7 +236,7 @@
  
    if (event || GetEvent())
       dsyslog("Title: '%s' Subtitle: '%s'", event->Title(), event->ShortText());
-@@ -4213,8 +4224,21 @@ cRecordControl::cRecordControl(cDevice *
+@@ -4227,8 +4238,21 @@ cRecordControl::cRecordControl(cDevice *
    isyslog("record %s", fileName);
    if (MakeDirs(fileName, true)) {
       const cChannel *ch = timer->Channel();
@@ -260,7 +260,7 @@
          Recording.WriteInfo();
          cStatus::MsgRecording(device, Recording.Name(), Recording.FileName(), true);
          if (!Timer && !cReplayControl::LastReplayed()) // an instant recording, maybe from cRecordControls::PauseLiveVideo()
-@@ -4236,8 +4260,6 @@ cRecordControl::cRecordControl(cDevice *
+@@ -4250,8 +4274,6 @@ cRecordControl::cRecordControl(cDevice *
             }
          return;
          }
@@ -269,7 +269,7 @@
       }
    else
       timer->SetDeferred(DEFERTIMER);
-@@ -4312,7 +4334,7 @@ bool cRecordControl::Process(time_t t)
+@@ -4326,7 +4348,7 @@ bool cRecordControl::Process(time_t t)
  cRecordControl *cRecordControls::RecordControls[MAXRECORDCONTROLS] = { NULL };
  int cRecordControls::state = 0;
  
@@ -278,7 +278,7 @@
  {
    static time_t LastNoDiskSpaceMessage = 0;
    int FreeMB = 0;
-@@ -4347,7 +4369,7 @@ bool cRecordControls::Start(cTimer *Time
+@@ -4361,7 +4383,7 @@ bool cRecordControls::Start(cTimer *Time
          if (!Timer || Timer->Matches()) {
             for (int i = 0; i < MAXRECORDCONTROLS; i++) {
                 if (!RecordControls[i]) {
@@ -287,7 +287,7 @@
                    return RecordControls[i]->Process(time(NULL));
                    }
                 }
-@@ -4363,6 +4385,11 @@ bool cRecordControls::Start(cTimer *Time
+@@ -4377,6 +4399,11 @@ bool cRecordControls::Start(cTimer *Time
    return false;
  }
  
@@ -299,7 +299,7 @@
  void cRecordControls::Stop(const char *InstantId)
  {
    ChangeState();
-@@ -4385,10 +4412,16 @@ void cRecordControls::Stop(const char *I
+@@ -4399,10 +4426,16 @@ void cRecordControls::Stop(const char *I
  
  bool cRecordControls::PauseLiveVideo(void)
  {
@@ -318,7 +318,7 @@
       cControl::Launch(rc);
       cControl::Attach();
       Skins.Message(mtStatus, NULL);
-@@ -4492,7 +4525,18 @@ cString cReplayControl::fileName;
+@@ -4506,7 +4539,18 @@ cString cReplayControl::fileName;
  cReplayControl::cReplayControl(bool PauseLive)
  :cDvbPlayerControl(fileName, PauseLive)
  {
@@ -338,14 +338,20 @@
    currentReplayControl = this;
    displayReplay = NULL;
    marksModified = false;
---- vdr-2.0.5-original/receiver.h	2014-03-20 19:53:17.289197420 +0100
-+++ vdr-2.0/receiver.h	2014-09-11 18:55:49.485113436 +0200
-@@ -71,6 +71,12 @@ public:
+--- vdr-2.0.7-original/receiver.h	2012-09-02 11:27:20.000000000 +0200
++++ vdr-2.0.7/receiver.h	2015-02-28 12:31:51.671612512 +0100
+@@ -48,6 +48,7 @@ public:
+                ///< that this cReceiver may be detached at any time in favor of a timer recording
+                ///< or live viewing (without blocking the cDevice it is attached to).
+   virtual ~cReceiver();
++  void SetPriority(int Priority);
+   bool AddPid(int Pid);
+                ///< Adds the given Pid to the list of PIDs of this receiver.
+   bool AddPids(const int *Pids);
+@@ -71,6 +72,10 @@ public:
                 ///< case the device is needed otherwise, so code that uses a cReceiver
                 ///< should repeatedly check whether it is still attached, and if
                 ///< it isn't, delete it (or take any other appropriate measures).
-+  void SetReceivePriority(int Priority) { priority = Priority; }
-+               ///< Changes receiver priority while in action.
 +  virtual bool IsPreRecording(const cChannel *Channel) { return false; }
 +               ///< prerecords given channel; may be turned into a disc recording.
 +  virtual bool ActivatePreRecording(const char* fileName, int Priority) { return false; }
@@ -353,8 +359,22 @@
    };
  
  #endif //__RECEIVER_H
---- vdr-2.0.5-original/recorder.h	2014-03-20 19:53:17.293197434 +0100
-+++ vdr-2.0/recorder.h	2014-09-11 18:55:49.485113436 +0200
+--- vdr-2.0.7-original/receiver.c	2012-06-02 15:20:38.000000000 +0200
++++ vdr-2.0.7/receiver.c	2015-02-28 12:31:31.575688807 +0100
+@@ -29,6 +29,11 @@ cReceiver::~cReceiver()
+      }
+ }
+ 
++void cReceiver::SetPriority(int Priority)
++{
++  priority = constrain(Priority, MINPRIORITY, MAXPRIORITY);
++}
++
+ bool cReceiver::AddPid(int Pid)
+ {
+   if (Pid) {
+--- vdr-2.0.7-original/recorder.h	2010-12-27 12:17:04.000000000 +0100
++++ vdr-2.0.7/recorder.h	2015-02-28 12:30:32.955912572 +0100
 @@ -16,8 +16,8 @@
  #include "ringbuffer.h"
  #include "thread.h"
@@ -385,8 +405,8 @@
    };
  
  #endif //__RECORDER_H
---- vdr-2.0.5-original/recorder.c	2014-03-20 19:53:17.293197434 +0100
-+++ vdr-2.0/recorder.c	2014-09-11 18:55:49.489113457 +0200
+--- vdr-2.0.7-original/recorder.c	2014-02-21 10:21:30.000000000 +0100
++++ vdr-2.0.7/recorder.c	2015-02-28 12:30:32.955912572 +0100
 @@ -24,44 +24,55 @@
  cRecorder::cRecorder(const char *FileName, const cChannel *Channel, int Priority)
  :cReceiver(Channel, Priority)
@@ -477,8 +497,8 @@
  }
  
  cRecorder::~cRecorder()
---- vdr-2.0.5-original/ringbuffer.h	2014-03-20 19:53:17.297197449 +0100
-+++ vdr-2.0/ringbuffer.h	2014-09-11 18:55:49.489113457 +0200
+--- vdr-2.0.7-original/ringbuffer.h	2013-02-16 16:20:37.000000000 +0100
++++ vdr-2.0.7/ringbuffer.h	2015-02-28 12:30:32.955912572 +0100
 @@ -96,6 +96,12 @@ public:
      ///< The data will remain in the buffer until a call to Del() deletes it.
      ///< Returns a pointer to the data, and stores the number of bytes
@@ -492,8 +512,8 @@
    void Del(int Count);
      ///< Deletes at most Count bytes from the ring buffer.
      ///< Count must be less or equal to the number that was returned by a previous
---- vdr-2.0.5-original/ringbuffer.c	2014-03-20 19:53:17.289197420 +0100
-+++ vdr-2.0/ringbuffer.c	2014-09-11 18:55:49.489113457 +0200
+--- vdr-2.0.7-original/ringbuffer.c	2012-09-22 13:26:49.000000000 +0200
++++ vdr-2.0.7/ringbuffer.c	2015-02-28 12:30:32.955912572 +0100
 @@ -367,6 +367,25 @@ uchar *cRingBufferLinear::Get(int &Count
    return NULL;
  }
@@ -520,8 +540,8 @@
  void cRingBufferLinear::Del(int Count)
  {
    if (Count > gotten) {
---- vdr-2.0.5-original/vdr.c	2014-03-20 19:53:17.293197434 +0100
-+++ vdr-2.0/vdr.c	2014-09-11 18:55:49.489113457 +0200
+--- vdr-2.0.7-original/vdr.c	2014-01-26 13:45:00.000000000 +0100
++++ vdr-2.0.7/vdr.c	2015-02-28 12:30:32.955912572 +0100
 @@ -1157,16 +1157,20 @@ int main(int argc, char *argv[])
                 key = kNone;
                 break;

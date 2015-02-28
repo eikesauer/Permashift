@@ -355,7 +355,7 @@ bool cBufferReceiver::ActivatePreRecording(const char* fileName, int priority)
 
 	// initialize our recorder (writing to first free file number)
 	InitializeFile(fileName, m_channel);
-	SetReceivePriority(priority);
+	cReceiver::SetPriority(priority);
 
 	// redirect the data stream to our new receiver
 	m_recordingMode = SyncingPhase;

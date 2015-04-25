@@ -1,6 +1,12 @@
 VDR Plugin 'permashift' Revision History
 ---------------------------------------------------
 
+2015-04-25: Version 1.0.3
+
+- Fixed a resource leak (including possibly loads of memory). This has been 
+  reported, described in detail and fixed(!) by 'blau-sls' at vdr-portal.de.
+  Kudos!
+
 2015-02-28: Version 1.0.2
 
 - added patch for new stable VDR series 2.2

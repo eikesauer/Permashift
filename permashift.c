@@ -9,7 +9,7 @@
 #include "permashift.h"
 #include "bufferreceiver.h"
 
-static const char *VERSION        = "1.0.1";
+static const char *VERSION        = "1.0.3";
 static const char *DESCRIPTION    = trNOOP("Auto-buffer live TV");
 
 

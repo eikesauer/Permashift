@@ -38,7 +38,7 @@ cBufferReceiver::~cBufferReceiver()
 
 	if (m_owner != NULL)
 	{
-		m_owner->BufferDeleted();
+		m_owner->BufferDeleted(this);
 	}
 	if (m_bufferWriter != NULL)
 	{

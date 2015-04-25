@@ -170,10 +170,14 @@ bool cPluginPermashift::StopLiveRecording()
 	return true;
 }
 
-void cPluginPermashift::BufferDeleted()
+void cPluginPermashift::BufferDeleted(cBufferReceiver* callingReceiver)
 {
 	// our buffer is about to be deleted by other means
-	m_bufferReceiver = NULL;
+	// only delete it if it is really our buffer and not an old promoted one!
+	if (m_bufferReceiver == callingReceiver)
+	{
+		m_bufferReceiver = NULL;
+	}
 }
 
 cMenuSetupPage *cPluginPermashift::SetupMenu(void)

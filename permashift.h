@@ -75,7 +75,7 @@ public:
 	bool StopLiveRecording(void);
 
 	/// our buffer tells us that it's gone
-	void BufferDeleted();
+	void BufferDeleted(cBufferReceiver* callingReceiver);
 
 	/// status callback
 	void ChannelSwitch(const cDevice *device, int channelNumber, bool liveView);

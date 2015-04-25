@@ -329,6 +329,7 @@ void cBufferReceiver::Action()
 
 			if (m_bufferWriter->Finished())
 			{
+				dsyslog("Permashift live buffer fully saved.");
 				delete m_ringBuffer;
 				m_ringBuffer = NULL;
 			}

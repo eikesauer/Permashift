@@ -317,6 +317,7 @@ void cBufferReceiver::Action()
 		}
 
 		// if we still got live buffer to save, do so when the 75% of the bytes seen in live data have been processed
+		if (m_ringBuffer != NULL && m_bufferWriter != NULL && !m_bufferWriter->Finished() && liveBytesProcessed >= 0.75 * liveByteCount)
 		if (m_bufferWriter != NULL && !m_bufferWriter->Finished() && liveBytesProcessed >= 0.75 * liveByteCount && m_ringBuffer != NULL)
 		{
 			dsyslog("Permashift saving live buffer: count %d, processed %d", liveByteCount, liveBytesProcessed);

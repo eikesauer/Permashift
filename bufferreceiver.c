@@ -89,7 +89,7 @@ void cBufferReceiver::Activate(bool On)
 }
 
 void cBufferReceiver::Receive(
-#ifdef VDR_2_3	  
+#if VDRVERSNUM > 20300
 				const 
 #endif
 				uchar *Data, int Length)
@@ -281,7 +281,7 @@ void cBufferReceiver::Action()
 								RecordingInfo.SetFramesPerSecond(
 										frameDetector->FramesPerSecond());
 								RecordingInfo.Write();
-#ifdef VDR_2_3
+#if VDRVERSNUM > 20300
                                                                 LOCK_RECORDINGS_WRITE;
 								Recordings->UpdateByName(recordingName);
 #else

@@ -123,7 +123,7 @@ bool cPluginPermashift::StartLiveRecording(int channelNumber)
 {
 	if (!g_enablePlugin) return true;
 
-#ifdef VDR_2_3        
+#if VDRVERSNUM > 20300
 	LOCK_CHANNELS_READ;
 	const cChannel *channel = Channels->GetByNumber(channelNumber);
 #else

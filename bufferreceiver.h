@@ -6,10 +6,6 @@
 
 #include <vdr/recorder.h>
 
-// VDR 2.3 defines this, so I'm (ab)using it for a compatibility define
-#ifdef LOCK_RECORDINGS_WRITE
-	#define VDR_2_3
-#endif
 
 class cPluginPermashift;
 
@@ -108,7 +104,7 @@ protected:
 
 	/// hands over some data
 	virtual void Receive(
-#ifdef VDR_2_3	  
+#if VDRVERSNUM > 20300	  
 				const 
 #endif
 				uchar *Data, int Length);

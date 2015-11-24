@@ -88,7 +88,11 @@ void cBufferReceiver::Activate(bool On)
 	}
 }
 
-void cBufferReceiver::Receive(uchar *Data, int Length)
+void cBufferReceiver::Receive(
+#ifdef VDR_2_3	  
+				const 
+#endif
+				uchar *Data, int Length)
 {
 	m_bufferSwitchMutex.Lock();
 
@@ -277,7 +281,12 @@ void cBufferReceiver::Action()
 								RecordingInfo.SetFramesPerSecond(
 										frameDetector->FramesPerSecond());
 								RecordingInfo.Write();
-								Recordings.UpdateByName(recordingName);
+#ifdef VDR_2_3
+                                                                LOCK_RECORDINGS_WRITE;
+								Recordings->UpdateByName(recordingName);
+#else
+                                                                Recordings.UpdateByName(recordingName);
+#endif
 							}
 						}
 						InfoWritten = true;

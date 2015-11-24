@@ -6,6 +6,11 @@
 
 #include <vdr/recorder.h>
 
+// VDR 2.3 defines this, so I'm (ab)using it for a compatibility define
+#ifdef LOCK_RECORDINGS_WRITE
+	#define VDR_2_3
+#endif
+
 class cPluginPermashift;
 
 /// frame index data
@@ -102,7 +107,11 @@ protected:
 	virtual void Activate(bool On);
 
 	/// hands over some data
-	virtual void Receive(uchar *Data, int Length);
+	virtual void Receive(
+#ifdef VDR_2_3	  
+				const 
+#endif
+				uchar *Data, int Length);
 
 private:
 

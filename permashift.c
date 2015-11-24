@@ -123,7 +123,12 @@ bool cPluginPermashift::StartLiveRecording(int channelNumber)
 {
 	if (!g_enablePlugin) return true;
 
-	cChannel *channel = Channels.GetByNumber(channelNumber);
+#ifdef VDR_2_3        
+	LOCK_CHANNELS_READ;
+	const cChannel *channel = Channels->GetByNumber(channelNumber);
+#else
+        const cChannel *channel = Channels.GetByNumber(channelNumber);
+#endif
 	if (channel == NULL)
 	{
 		esyslog("Permashift: Did not find channel!");

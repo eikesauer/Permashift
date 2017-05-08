@@ -26,15 +26,15 @@ public:
 	}
 };
 
-/// recorder class using buffer, or file if switched
+/// recorder class using buffer, or file after switch
 class cBufferReceiver : public cRecorder
 {
 private:
 
-	/// syncs receive method vs. activation of recording
+	/// syncs receive method vs. activation of file recording
 	cMutex m_bufferSwitchMutex;
 	
-	/// used by ActivatePreRecording() to wait for end of buffer switching and parts of file ot be saved
+	/// used by ActivatePreRecording() to wait for end of buffer switching and parts of file to be saved
 	cCondWait m_syncCondition;
 
 	/// channel to record

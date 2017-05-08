@@ -9,7 +9,6 @@
 #include "bufferreceiver.h"
 
 #include <vdr/recording.h>
-#include <vdr/skins.h>
 #include "permashift.h"
 
 // copied from recording.c
@@ -94,6 +93,17 @@ void cBufferReceiver::Receive(
 #endif
 				uchar *Data, int Length)
 {
+	if (m_recordingMode == FileRecording)
+	{
+		// In recording phase, just pass data to ordinary disc recorder.
+		// No need for a mutex lock here.
+		cRecorder::Receive(Data, Length);
+		return;
+	}
+	
+	// switching or file recording phase
+
+	// lock against phase switching in ActivatePreRecording()
 	m_bufferSwitchMutex.Lock();
 
 	// create frame detector at start of memory receiving
@@ -102,139 +112,123 @@ void cBufferReceiver::Receive(
 		frameDetector = new cFrameDetector(m_channel->Vpid(), m_channel->Vtype());
 	}
 
-	// in recording phase, pass data to disc recorder
-	if (m_recordingMode == FileRecording)
-	{
-		cRecorder::Receive(Data, Length);
-	}
+	// route the data through our sync buffer.
+	m_syncBuffer.Put(Data, Length);
 
-	// During memory recording and synchronization phase,
-	// we write the data into our sync buffer.
-	else if (m_recordingMode == MemoryRecording || m_recordingMode == SyncingPhase)
+	int syncByteCount;
+	uchar *syncBytes = m_syncBuffer.Get(syncByteCount);
+	if (syncBytes != NULL)
 	{
-		m_syncBuffer.Put(Data, Length);
-
-		int r;
-		uchar *b = m_syncBuffer.Get(r);
-		if (b)
+		int Count = frameDetector->Analyze(syncBytes, syncByteCount);
+		if (Count)
 		{
-			int Count = frameDetector->Analyze(b, r);
-			if (Count)
+			bool switchToRecorder = false;
+			if (frameDetector->Synced())
 			{
-				bool switchToRecorder = false;
-				if (frameDetector->Synced())
+				if (frameDetector->NewFrame())
 				{
-					if (frameDetector->NewFrame())
+					// check switch to disc recording
+					if (m_recordingMode == SyncingPhase && frameDetector->Synced() && frameDetector->IndependentFrame())
 					{
-						// check switch to disc recording
-						if (m_recordingMode == SyncingPhase && frameDetector->Synced() && frameDetector->IndependentFrame())
-						{
-							switchToRecorder = true;
-						}
-						else
-						{
-							// add new frame information to our index
-							m_frameIndex.Add(new tFrameInfo(frameDetector->IndependentFrame(), m_ringBuffer->BytesWritten()), m_frameIndex.Last());
-							// if (m_bufferWriter != NULL)
-							// {
-								// add to last file of buffer writer
-								// ((tFrameInfo*)m_frameIndex.Last())->fileNo = m_bufferWriter->FileNumber();
-							// }
-						}
-					}
-					// inject PAT/PMT at new I frame
-					if (frameDetector->IndependentFrame())
-					{
-						cPatPmtGenerator patPmtGenerator(m_channel);
-						m_ringBuffer->WriteData(patPmtGenerator.GetPat(), TS_SIZE);
-						int Index = 0;
-						while (uchar *pmt = patPmtGenerator.GetPmt(Index))
-						{
-							m_ringBuffer->WriteData(pmt, TS_SIZE);
-						}
-					}
-				}
-
-				if (!switchToRecorder)
-				{
-					// data is recorded to memory
-					m_ringBuffer->WriteData(b, Count);
-					m_syncBuffer.Del(Count);
-
-					// delete frame information for frames just overwritten
-					tFrameInfo* firstFrameInfo = NULL;
-					do
-					{
-						firstFrameInfo = m_frameIndex.First();
-						if (firstFrameInfo == NULL || firstFrameInfo->offset >= m_ringBuffer->BytesDropped())
-						{
-							break;
-						}
-						m_frameIndex.Del(firstFrameInfo);
-					} while (true);
-
-					/*
-					static bool overflowReported = false;
-					if (!overflowReported && m_ringBuffer->BytesDropped() > 0)
-					{
-						Skins.QueueMessage(mtInfo, tr("Debug: Permashift buffer fully used"));
-						overflowReported = true;
-					}
-					*/
-				}
-				else
-				{
-					// switch to disc recording
-					dsyslog("permashift: starting file recording \n");
-					m_recordingMode = FileRecording;
-
-					// prepare memory buffer and index
-					m_bufferWriter->Initialize();
-
-					// write index file
-					tFrameInfo* frameInfo = m_frameIndex.First();
-					uint64_t firstByte = frameInfo->offset;
-					unsigned int currentFileNo = 0;
-					while (frameInfo != NULL)
-					{
-						if (frameInfo->fileNo > currentFileNo)
-						{
-							currentFileNo = frameInfo->fileNo;
-							firstByte = frameInfo->offset;
-						}
-						index->Write(frameInfo->iFrame, frameInfo->fileNo, frameInfo->offset - firstByte);
-						frameInfo = (tFrameInfo*)frameInfo->Next();
-					}
-
-					// write (parts of) buffer
-					if (m_saveOnTheFly)
-					{
-						m_bufferWriter->SaveFile();
+						switchToRecorder = true;
 					}
 					else
 					{
-						m_bufferWriter->SaveAll();
+						// add new frame information to our index
+						m_frameIndex.Add(new tFrameInfo(frameDetector->IndependentFrame(), m_ringBuffer->BytesWritten()), m_frameIndex.Last());
+						// if (m_bufferWriter != NULL)
+						// {
+							// add to last file of buffer writer
+							// ((tFrameInfo*)m_frameIndex.Last())->fileNo = m_bufferWriter->FileNumber();
+						// }
 					}
-
-					// start recorder thread
-					Start();
-
-					// flush sync buffer to recorder
-					int r;
-					uchar *b = NULL;
-					do
-					{
-						b = m_syncBuffer.GetRest(r);
-						if (b != NULL)
-						{
-							cRecorder::Receive(b, r);
-							m_syncBuffer.Del(r);
-						}
-					} while (b != NULL && r > 0);
-
-					// signal end of sync phase
-					m_syncCondition.Signal();
 				}
+				// inject PAT/PMT at new I frame
+				if (frameDetector->IndependentFrame())
+				{
+					cPatPmtGenerator patPmtGenerator(m_channel);
+					m_ringBuffer->WriteData(patPmtGenerator.GetPat(), TS_SIZE);
+					int Index = 0;
+					while (uchar *pmt = patPmtGenerator.GetPmt(Index))
+					{
+						m_ringBuffer->WriteData(pmt, TS_SIZE);
+					}
+				}
+			}
+
+			if (!switchToRecorder)
+			{
+				// data is recorded to memory
+				m_ringBuffer->WriteData(syncBytes, Count);
+				m_syncBuffer.Del(Count);
+
+				// delete frame information for frames just overwritten
+				tFrameInfo* firstFrameInfo = NULL;
+				do
+				{
+					firstFrameInfo = m_frameIndex.First();
+					if (firstFrameInfo == NULL || firstFrameInfo->offset >= m_ringBuffer->BytesDropped())
+					{
+						break;
+					}
+					m_frameIndex.Del(firstFrameInfo);
+				} while (true);
+			}
+			else
+			{
+				// switch to disc recording
+				dsyslog("permashift: ending synchronization phase \n");
+
+				m_recordingMode = FileRecording;
+
+				// prepare memory buffer and index
+				m_bufferWriter->Initialize();
+
+				// write index file
+				tFrameInfo* frameInfo = m_frameIndex.First();
+				uint64_t firstByte = frameInfo->offset;
+				unsigned int currentFileNo = 0;
+				while (frameInfo != NULL)
+				{
+					if (frameInfo->fileNo > currentFileNo)
+					{
+						currentFileNo = frameInfo->fileNo;
+						firstByte = frameInfo->offset;
+					}
+					index->Write(frameInfo->iFrame, frameInfo->fileNo, frameInfo->offset - firstByte);
+					frameInfo = (tFrameInfo*)frameInfo->Next();
+				}
+
+				// write (parts of) buffer
+				if (m_saveOnTheFly)
+				{
+					m_bufferWriter->SaveFile();
+				}
+				else
+				{
+					m_bufferWriter->SaveAll();
+				}
+
+				// start recorder thread
+				Start();
+
+				// flush sync buffer to recorder
+				int r;
+				uchar *b = NULL;
+				do
+				{
+					b = m_syncBuffer.GetRest(r);
+					if (b != NULL)
+					{
+						cRecorder::Receive(b, r);
+						m_syncBuffer.Del(r);
+					}
+				} while (b != NULL && r > 0);
+
+				dsyslog("permashift: signaling end of synchronization phase \n");
+
+				// signal end of sync phase
+				m_syncCondition.Signal();
 			}
 		}
 	}
@@ -325,9 +319,8 @@ void cBufferReceiver::Action()
 			}
 		}
 
-		// if we still got live buffer to save, do so when the 75% of the bytes seen in live data have been processed
+		// if we still got live buffer to save, do so when 75% of the bytes seen in live data have been processed
 		if (m_ringBuffer != NULL && m_bufferWriter != NULL && !m_bufferWriter->Finished() && liveBytesProcessed >= 0.75 * liveByteCount)
-		if (m_bufferWriter != NULL && !m_bufferWriter->Finished() && liveBytesProcessed >= 0.75 * liveByteCount && m_ringBuffer != NULL)
 		{
 			dsyslog("Permashift saving live buffer: count %d, processed %d", liveByteCount, liveBytesProcessed);
 
@@ -362,19 +355,26 @@ bool cBufferReceiver::ActivatePreRecording(const char* fileName, int priority)
 
 	m_bufferSwitchMutex.Lock();
 
+	dsyslog("permashift: usage of preliminary RAM recording activated \n");
+
 	m_bufferWriter = new cBufferWriter(m_ringBuffer, &m_frameIndex, fileName, m_saveOnTheFly);
 
 	// initialize our recorder (writing to first free file number)
+	dsyslog("permashift: starting disk recording of live video to come \n");
 	InitializeFile(fileName, m_channel);
 	cReceiver::SetPriority(priority);
 
-	// redirect the data stream to our new receiver
+	// starting sync phase
+	dsyslog("permashift: starting synchronization phase \n");
+
 	m_recordingMode = SyncingPhase;
 
 	m_bufferSwitchMutex.Unlock();
 
 	// wait for synchronization to finish
 	m_syncCondition.Wait(0);
+
+	dsyslog("permashift: end of synchronization phase acknowledged \n");
 
 	return retVal;
 }

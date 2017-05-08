@@ -217,7 +217,7 @@ void cBufferWriter::StartNewFile()
 	// allocate video file in full size (hopefully creating a sparse file),
 	// so we can seek to the end later on
 	sprintf(m_fileNumber, RECORDFILESUFFIXTS, m_fileCount);
-	dsyslog("writing... %s", m_fileName);
+	dsyslog("Permashift: new file for backwards saving of past video data '%s'", m_fileName);
 	int retVal = truncate(m_fileName, m_currentFileOffset);
 	if (retVal != 0)
 	{

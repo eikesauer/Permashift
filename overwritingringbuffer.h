@@ -11,7 +11,7 @@
 
 #include <vdr/tools.h>
 
-/// ring buffer overwriting oldest data when filled
+/// ring buffer overwriting oldest data when full
 class cOverwritingRingBuffer
 {
 private:
@@ -20,19 +20,21 @@ private:
 	uint64_t m_bufferLength;	///< size of buffer
 	uint64_t m_dataStart;		///< offset of data start
 	uint64_t m_dataLength;		///< used bytes in buffer
-	uint64_t m_dataWritten;		///< total bytes written to buffer (livetime)
+	uint64_t m_dataWritten;		///< total bytes written to buffer (lifetime)
 
 public:
 
+	/// create buffer object and allocate data buffer
 	cOverwritingRingBuffer(uint64_t bufferSize);
 
+	/// destroy buffer object and deallocate data buffer
 	virtual ~cOverwritingRingBuffer();
 
-	/// allocates buffer - only needed if size 0 has been given to constructor
-	/// returns false if out of memory
+	/// (re)allocates buffer - only needed if size 0 has been given to constructor
+	/// returns false and deallocates whole buffer if out of memory
 	bool Allocate(uint64_t bufferSize);
 
-	/// writes data to the buffer
+	/// writes data to the buffer, dropping old data if necessary
 	void WriteData(uchar* Data, uint64_t Length);
 
 	/// fetches and removes up to maxLength bytes from the buffer
@@ -43,7 +45,7 @@ public:
 	/// the pointer provided is not to be deleted by the caller
 	uint64_t ReadDataFromEnd(uchar** Data, uint64_t MaxLength);
 
-	/// drops bytes from current beginning of buffer
+	/// drops oldest bytes from buffer
 	void DropData(uint64_t bytesToDrop);
 
 	/// bytes available

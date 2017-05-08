@@ -27,11 +27,14 @@ bool cOverwritingRingBuffer::Allocate(uint64_t bufferSize)
 {
 	m_bufferLength = bufferSize;
 
-	m_buffer = (uchar*)malloc(m_bufferLength);
-	if (m_buffer == NULL)
+	uchar* tempBuffer = (uchar*)realloc(m_buffer, m_bufferLength);
+	if (tempBuffer == NULL)
 	{
+		// if it fails, free "old" memory and report error
+		free(m_buffer);
 		m_bufferLength = 0;
 	}
+	m_buffer = tempBuffer;
 
 	return m_buffer != NULL;
 }
@@ -69,6 +72,10 @@ void cOverwritingRingBuffer::WriteData(uchar* Data, uint64_t Length)
 	m_dataWritten += Length;
 
 	// debug buffer state
+	if (m_dataLength == m_bufferLength && m_dataLength > previousDataLength)
+	{
+		dsyslog("permashift: live video buffer (%d MB) full, overwriting started\n", (uint)round(m_dataLength / (1024.0 * 1024.0)));
+	}
 	if (m_dataLength / (100ull * 1024 * 1024) >  previousDataLength / (100ull * 1024 * 1024))
 	{
 		dsyslog("permashift: %d MB live video data in buffer \n", 100 * (uint)(m_dataLength / (100ull * 1024 * 1024)));

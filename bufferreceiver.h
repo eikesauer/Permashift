@@ -85,13 +85,13 @@ public:
 	/// connect to our owning class
 	void SetOwner(cPluginPermashift* owner);
 
-	/// is already being used as recording
+	/// is it already being used as recording?
 	bool IsPromoted() { return m_recordingMode != MemoryRecording; }
 
-	/// receiver is recording the given channel (and has not yet been used as recording)
+	/// is receiver recording the given channel (and has not yet been used as recording)?
 	bool IsPreRecording(const cChannel *Channel);
 
-	/// saves the buffer contents to file
+	/// saves the buffer contents to file and starts recording of future data
 	bool ActivatePreRecording(const char* fileName, int Priority);
 
 	/// queries seconds of video recorded at the moment
@@ -99,10 +99,10 @@ public:
 
 protected:
 
-	/// (de-)activation
+	/// receiver (de-)activation
 	virtual void Activate(bool On);
 
-	/// hands over some data
+	/// hands over some data to us
 	virtual void Receive(
 #if VDRVERSNUM > 20300	  
 				const 
@@ -111,7 +111,7 @@ protected:
 
 private:
 
-	// recording thread when saving to file
+	// receiving thread when recording to file
 	void Action();
 
 };

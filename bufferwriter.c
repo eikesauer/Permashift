@@ -6,8 +6,8 @@
  */
 
 
-#define VIDEO_FILE_SIZE (50 * 1024 * 1024)
-#define SAVING_HEAP_SIZE (unsigned int)(5 * 1024 * 1024)
+#define VIDEO_FILE_SIZE (5 * 1024 * 1024)
+#define SAVING_HEAP_SIZE (unsigned int)(1 * 1024 * 1024)
 
 // copied from recording.c
 #define RECORDFILESUFFIXTS      "/%05d.ts"
@@ -40,7 +40,7 @@ m_ringBuffer(ringBuffer), m_frameIndex(memoryIndex), m_currentFile(NULL), m_firs
 		FILE* tempFile = fopen(m_fileName, "wb");
 		if (!tempFile)
 		{
-			esyslog("Permashift: Could not open file '%s'!", m_fileName);
+			esyslog("permashift: could not open file '%s'!", m_fileName);
 			// give up
 			m_fileCount = 0;
 		}
@@ -217,11 +217,11 @@ void cBufferWriter::StartNewFile()
 	// allocate video file in full size (hopefully creating a sparse file),
 	// so we can seek to the end later on
 	sprintf(m_fileNumber, RECORDFILESUFFIXTS, m_fileCount);
-	dsyslog("Permashift: new file for backwards saving of past video data '%s'", m_fileName);
+	dsyslog("permashift: new file for backwards saving of past video data '%s'", m_fileName);
 	int retVal = truncate(m_fileName, m_currentFileOffset);
 	if (retVal != 0)
 	{
-		esyslog("Permashift: Could not resize file '%s' (%d/%d)!", m_fileName, retVal, errno);
+		esyslog("permashift: could not resize file '%s' (%d/%d)!", m_fileName, retVal, errno);
 		// give up
 		m_fileCount = 0;
 	}

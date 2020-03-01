@@ -16,12 +16,11 @@
 class cPluginPermashift;
 class cBufferReceiver;
 
-/// Setup class
+/// Setup menu class
 class cMenuSetupLR : public cMenuSetupPage 
 {
 private:
 	int newEnablePlugin;
-	// obsolete int newMaxLength;
 	int newBufferSizeIndex;
 	int newSaveBlocksRewind;
 
@@ -51,6 +50,7 @@ protected:
 
 };
 
+
 /// permashift plugin class
 class cPluginPermashift : public cPlugin
 {
@@ -61,18 +61,10 @@ private:
 	// memory buffer receiver
 	cBufferReceiver* m_bufferReceiver;
 
-	// int m_mainThreadCounter;
-
 public:
 
 	cPluginPermashift(void);
 	virtual ~cPluginPermashift();
-
-	/// start a recording
-	bool StartLiveRecording(int channelNumber);
-
-	/// stop a recording
-	bool StopLiveRecording(void);
 
 	/// our buffer tells us that it's gone
 	void BufferDeleted(cBufferReceiver* callingReceiver);
@@ -80,20 +72,25 @@ public:
 	/// status callback
 	void ChannelSwitch(const cDevice *device, int channelNumber, bool liveView);
 
-	/// Option: enabling plugin
-	void SetEnable(bool enable);
-	bool IsEnabled(void);
-
 	// plugin overrides
 	virtual bool Start(void);
 	virtual void Stop(void);
-	// virtual void MainThreadHook(void);
 	virtual const char *Version(void);
 	virtual const char *Description(void);
 	virtual cMenuSetupPage *SetupMenu(void);
 	virtual bool SetupParse(const char *Name, const char *Value);
 
-	/// Service "Permashift-GetUsedBufferSecs-v1", called with int*
-	/// will receive the seconds read into buffer available for rewinding
+	/// Service "Permashift-GetUsedBufferSecs-v1", called with int*.
+	/// Will receive the seconds read into buffer available for rewinding.
+	/// If there's no useful value (yet), secs will remain unchanged.
 	bool Service(const char* Id, void* Data);
+
+private:
+
+	/// start a recording
+	bool StartLiveRecording(int channelNumber);
+
+	/// stop a recording
+	bool StopLiveRecording(void);
+
 };

@@ -37,7 +37,7 @@ private:
 	/// next chunk of data goes to a new file
 	bool m_firstChunkInFile;
 
-	/// byte offset in current file of last chunk written
+	/// byte offset of last chunk written in current file
 	uint64_t m_currentFileOffset;
 
 	/// buffer offset of very first frame in index
@@ -48,7 +48,6 @@ private:
 
 	/// bytes saved until now
 	uint64_t m_bytesSaved;
-
 
 public:
 

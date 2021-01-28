@@ -19,7 +19,6 @@ diff --unified vdr-2.4.6-original/device.c vdr-2.4.6/device.c
  // --- cTSBuffer -------------------------------------------------------------
  
  cTSBuffer::cTSBuffer(int File, int Size, int DeviceNumber)
-Nur in vdr-2.4.6: device.c.orig.
 diff --unified vdr-2.4.6-original/device.h vdr-2.4.6/device.h
 --- vdr-2.4.6-original/device.h	2020-06-27 12:24:46.000000000 +0200
 +++ vdr-2.4.6/device.h	2021-01-26 19:50:27.512032149 +0100
@@ -40,7 +39,6 @@ diff --unified vdr-2.4.6-original/device.h vdr-2.4.6/device.h
    void Detach(cReceiver *Receiver);
         ///< Detaches the given receiver from this device.
    void DetachAll(int Pid);
-Nur in vdr-2.4.6: device.h.orig.
 diff --unified vdr-2.4.6-original/dvbplayer.c vdr-2.4.6/dvbplayer.c
 --- vdr-2.4.6-original/dvbplayer.c	2019-05-27 15:54:19.000000000 +0200
 +++ vdr-2.4.6/dvbplayer.c	2021-01-26 19:50:27.512032149 +0100
@@ -184,7 +182,6 @@ diff --unified vdr-2.4.6-original/dvbplayer.h vdr-2.4.6/dvbplayer.h
    virtual ~cDvbPlayerControl();
    void SetMarks(const cMarks *Marks);
    bool Active(void);
-Gemeinsame Unterverzeichnisse: vdr-2.4.6-original/libsi und vdr-2.4.6/libsi.
 diff --unified vdr-2.4.6-original/menu.c vdr-2.4.6/menu.c
 --- vdr-2.4.6-original/menu.c	2020-12-12 23:01:01.000000000 +0100
 +++ vdr-2.4.6/menu.c	2021-01-26 19:50:27.512032149 +0100
@@ -316,7 +313,6 @@ diff --unified vdr-2.4.6-original/menu.c vdr-2.4.6/menu.c
    currentReplayControl = this;
    displayReplay = NULL;
    marksModified = false;
-Nur in vdr-2.4.6: menu.c.orig.
 diff --unified vdr-2.4.6-original/menu.h vdr-2.4.6/menu.h
 --- vdr-2.4.6-original/menu.h	2018-04-14 12:24:41.000000000 +0200
 +++ vdr-2.4.6/menu.h	2021-01-26 19:50:27.512032149 +0100
@@ -351,8 +347,6 @@ diff --unified vdr-2.4.6-original/menu.h vdr-2.4.6/menu.h
    virtual ~cReplayControl();
    void Stop(void);
    virtual cOsdObject *GetInfo(void);
-Gemeinsame Unterverzeichnisse: vdr-2.4.6-original/PLUGINS und vdr-2.4.6/PLUGINS.
-Gemeinsame Unterverzeichnisse: vdr-2.4.6-original/po und vdr-2.4.6/po.
 diff --unified vdr-2.4.6-original/receiver.h vdr-2.4.6/receiver.h
 --- vdr-2.4.6-original/receiver.h	2017-05-01 10:48:34.000000000 +0200
 +++ vdr-2.4.6/receiver.h	2021-01-26 19:50:27.512032149 +0100
@@ -529,8 +523,6 @@ diff --unified vdr-2.4.6-original/ringbuffer.h vdr-2.4.6/ringbuffer.h
    void Del(int Count);
      ///< Deletes at most Count bytes from the ring buffer.
      ///< Count must be less or equal to the number that was returned by a previous
-Gemeinsame Unterverzeichnisse: vdr-2.4.6-original/symbols und vdr-2.4.6/symbols.
-Nur in vdr-2.4.6: vdr-2.4-patch-for-permashift.diff-alt.
 diff --unified vdr-2.4.6-original/vdr.c vdr-2.4.6/vdr.c
 --- vdr-2.4.6-original/vdr.c	2020-11-20 14:49:58.000000000 +0100
 +++ vdr-2.4.6/vdr.c	2021-01-26 20:18:51.112869755 +0100

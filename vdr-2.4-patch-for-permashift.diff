@@ -1,7 +1,7 @@
-diff --unified vdr-2.4.1-orig/device.c vdr-2.4.1/device.c
---- vdr-2.4.1-orig/device.c	2020-03-01 13:03:03.203698201 +0100
-+++ vdr-2.4.1/device.c	2020-03-01 13:03:32.455812280 +0100
-@@ -1847,6 +1847,17 @@
+diff --unified vdr-2.4.6-original/device.c vdr-2.4.6/device.c
+--- vdr-2.4.6-original/device.c	2020-09-16 15:48:33.000000000 +0200
++++ vdr-2.4.6/device.c	2021-01-26 19:50:27.512032149 +0100
+@@ -1862,6 +1862,17 @@
        Detach(receiver[i]);
  }
  
@@ -19,9 +19,10 @@ diff --unified vdr-2.4.1-orig/device.c vdr-2.4.1/device.c
  // --- cTSBuffer -------------------------------------------------------------
  
  cTSBuffer::cTSBuffer(int File, int Size, int DeviceNumber)
-diff --unified vdr-2.4.1-orig/device.h vdr-2.4.1/device.h
---- vdr-2.4.1-orig/device.h	2020-03-01 13:03:03.223698280 +0100
-+++ vdr-2.4.1/device.h	2020-03-01 13:03:32.455812280 +0100
+Nur in vdr-2.4.6: device.c.orig.
+diff --unified vdr-2.4.6-original/device.h vdr-2.4.6/device.h
+--- vdr-2.4.6-original/device.h	2020-06-27 12:24:46.000000000 +0200
++++ vdr-2.4.6/device.h	2021-01-26 19:50:27.512032149 +0100
 @@ -85,6 +85,7 @@
  
  class cPlayer;
@@ -30,7 +31,7 @@ diff --unified vdr-2.4.1-orig/device.h vdr-2.4.1/device.h
  class cLiveSubtitle;
  
  class cDeviceHook : public cListObject {
-@@ -842,6 +843,8 @@
+@@ -852,6 +853,8 @@
         ///< Returns true if we are currently receiving. The parameter has no meaning (for backwards compatibility only).
    bool AttachReceiver(cReceiver *Receiver);
         ///< Attaches the given receiver to this device.
@@ -39,9 +40,10 @@ diff --unified vdr-2.4.1-orig/device.h vdr-2.4.1/device.h
    void Detach(cReceiver *Receiver);
         ///< Detaches the given receiver from this device.
    void DetachAll(int Pid);
-diff --unified vdr-2.4.1-orig/dvbplayer.c vdr-2.4.1/dvbplayer.c
---- vdr-2.4.1-orig/dvbplayer.c	2020-03-01 13:03:03.223698280 +0100
-+++ vdr-2.4.1/dvbplayer.c	2020-03-01 13:03:32.455812280 +0100
+Nur in vdr-2.4.6: device.h.orig.
+diff --unified vdr-2.4.6-original/dvbplayer.c vdr-2.4.6/dvbplayer.c
+--- vdr-2.4.6-original/dvbplayer.c	2019-05-27 15:54:19.000000000 +0200
++++ vdr-2.4.6/dvbplayer.c	2021-01-26 19:50:27.512032149 +0100
 @@ -249,13 +249,14 @@
    cUnbufferedFile *replayFile;
    double framesPerSecond;
@@ -155,9 +157,9 @@ diff --unified vdr-2.4.1-orig/dvbplayer.c vdr-2.4.1/dvbplayer.c
  cDvbPlayerControl::~cDvbPlayerControl()
  {
    Stop();
-diff --unified vdr-2.4.1-orig/dvbplayer.h vdr-2.4.1/dvbplayer.h
---- vdr-2.4.1-orig/dvbplayer.h	2020-03-01 13:03:03.223698280 +0100
-+++ vdr-2.4.1/dvbplayer.h	2020-03-01 13:03:32.455812280 +0100
+diff --unified vdr-2.4.6-original/dvbplayer.h vdr-2.4.6/dvbplayer.h
+--- vdr-2.4.6-original/dvbplayer.h	2016-12-22 11:36:50.000000000 +0100
++++ vdr-2.4.6/dvbplayer.h	2021-01-26 19:50:27.512032149 +0100
 @@ -16,6 +16,14 @@
  
  class cDvbPlayer;
@@ -182,11 +184,11 @@ diff --unified vdr-2.4.1-orig/dvbplayer.h vdr-2.4.1/dvbplayer.h
    virtual ~cDvbPlayerControl();
    void SetMarks(const cMarks *Marks);
    bool Active(void);
-Gemeinsame Unterverzeichnisse: vdr-2.4.1-orig/libsi und vdr-2.4.1/libsi.
-diff --unified vdr-2.4.1-orig/menu.c vdr-2.4.1/menu.c
---- vdr-2.4.1-orig/menu.c	2020-03-01 13:03:03.215698248 +0100
-+++ vdr-2.4.1/menu.c	2020-03-01 13:10:08.853186639 +0100
-@@ -5214,6 +5214,16 @@
+Gemeinsame Unterverzeichnisse: vdr-2.4.6-original/libsi und vdr-2.4.6/libsi.
+diff --unified vdr-2.4.6-original/menu.c vdr-2.4.6/menu.c
+--- vdr-2.4.6-original/menu.c	2020-12-12 23:01:01.000000000 +0100
++++ vdr-2.4.6/menu.c	2021-01-26 19:50:27.512032149 +0100
+@@ -5226,6 +5226,16 @@
  
  cRecordControl::cRecordControl(cDevice *Device, cTimers *Timers, cTimer *Timer, bool Pause)
  {
@@ -203,7 +205,7 @@ diff --unified vdr-2.4.1-orig/menu.c vdr-2.4.1/menu.c
    const char *LastReplayed = cReplayControl::LastReplayed(); // must do this before locking schedules!
    // Whatever happens here, the timers will be modified in some way...
    Timers->SetModified();
-@@ -5236,6 +5246,7 @@
+@@ -5254,6 +5264,7 @@
    timer->SetPending(true);
    timer->SetRecording(true);
    event = timer->Event();
@@ -211,7 +213,7 @@ diff --unified vdr-2.4.1-orig/menu.c vdr-2.4.1/menu.c
  
    if (event || GetEvent())
       dsyslog("Title: '%s' Subtitle: '%s'", event->Title(), event->ShortText());
-@@ -5265,8 +5276,21 @@
+@@ -5283,8 +5294,21 @@
    if (MakeDirs(fileName, true)) {
       Recording.WriteInfo(); // we write this *before* attaching the recorder to the device, to make sure the info file is present when the recorder needs to update the fps value!
       const cChannel *ch = timer->Channel();
@@ -235,7 +237,7 @@ diff --unified vdr-2.4.1-orig/menu.c vdr-2.4.1/menu.c
          cStatus::MsgRecording(device, Recording.Name(), Recording.FileName(), true);
          if (!Timer && !LastReplayed) // an instant recording, maybe from cRecordControls::PauseLiveVideo()
             cReplayControl::SetRecording(fileName);
-@@ -5276,8 +5300,6 @@
+@@ -5294,8 +5318,6 @@
          Recordings->AddByName(fileName);
          return;
          }
@@ -244,7 +246,7 @@ diff --unified vdr-2.4.1-orig/menu.c vdr-2.4.1/menu.c
       }
    else
       timer->SetDeferred(DEFERTIMER);
-@@ -5348,7 +5370,7 @@
+@@ -5366,7 +5388,7 @@
  cRecordControl *cRecordControls::RecordControls[MAXRECORDCONTROLS] = { NULL };
  int cRecordControls::state = 0;
  
@@ -253,7 +255,7 @@ diff --unified vdr-2.4.1-orig/menu.c vdr-2.4.1/menu.c
  {
    static time_t LastNoDiskSpaceMessage = 0;
    int FreeMB = 0;
-@@ -5382,7 +5404,7 @@
+@@ -5404,7 +5426,7 @@
          if (!Timer || Timer->Matches()) {
             for (int i = 0; i < MAXRECORDCONTROLS; i++) {
                 if (!RecordControls[i]) {
@@ -262,7 +264,7 @@ diff --unified vdr-2.4.1-orig/menu.c vdr-2.4.1/menu.c
                    return RecordControls[i]->Process(time(NULL));
                    }
                 }
-@@ -5404,6 +5426,11 @@
+@@ -5428,6 +5450,11 @@
    return Start(Timers, NULL, Pause);
  }
  
@@ -274,7 +276,7 @@ diff --unified vdr-2.4.1-orig/menu.c vdr-2.4.1/menu.c
  void cRecordControls::Stop(const char *InstantId)
  {
    LOCK_TIMERS_WRITE;
-@@ -5439,10 +5466,17 @@
+@@ -5463,10 +5490,17 @@
  
  bool cRecordControls::PauseLiveVideo(void)
  {
@@ -294,7 +296,7 @@ diff --unified vdr-2.4.1-orig/menu.c vdr-2.4.1/menu.c
       cControl::Launch(rc);
       cControl::Attach();
       Skins.Message(mtStatus, NULL);
-@@ -5585,7 +5619,18 @@
+@@ -5609,7 +5643,18 @@
  cReplayControl::cReplayControl(bool PauseLive)
  :cDvbPlayerControl(fileName, PauseLive)
  {
@@ -314,9 +316,10 @@ diff --unified vdr-2.4.1-orig/menu.c vdr-2.4.1/menu.c
    currentReplayControl = this;
    displayReplay = NULL;
    marksModified = false;
-diff --unified vdr-2.4.1-orig/menu.h vdr-2.4.1/menu.h
---- vdr-2.4.1-orig/menu.h	2020-03-01 13:03:03.223698280 +0100
-+++ vdr-2.4.1/menu.h	2020-03-01 13:03:32.455812280 +0100
+Nur in vdr-2.4.6: menu.c.orig.
+diff --unified vdr-2.4.6-original/menu.h vdr-2.4.6/menu.h
+--- vdr-2.4.6-original/menu.h	2018-04-14 12:24:41.000000000 +0200
++++ vdr-2.4.6/menu.h	2021-01-26 19:50:27.512032149 +0100
 @@ -244,6 +244,8 @@
    bool GetEvent(void);
  public:
@@ -348,11 +351,11 @@ diff --unified vdr-2.4.1-orig/menu.h vdr-2.4.1/menu.h
    virtual ~cReplayControl();
    void Stop(void);
    virtual cOsdObject *GetInfo(void);
-Gemeinsame Unterverzeichnisse: vdr-2.4.1-orig/PLUGINS und vdr-2.4.1/PLUGINS.
-Gemeinsame Unterverzeichnisse: vdr-2.4.1-orig/po und vdr-2.4.1/po.
-diff --unified vdr-2.4.1-orig/receiver.h vdr-2.4.1/receiver.h
---- vdr-2.4.1-orig/receiver.h	2020-03-01 13:03:03.219698262 +0100
-+++ vdr-2.4.1/receiver.h	2020-03-01 13:03:32.455812280 +0100
+Gemeinsame Unterverzeichnisse: vdr-2.4.6-original/PLUGINS und vdr-2.4.6/PLUGINS.
+Gemeinsame Unterverzeichnisse: vdr-2.4.6-original/po und vdr-2.4.6/po.
+diff --unified vdr-2.4.6-original/receiver.h vdr-2.4.6/receiver.h
+--- vdr-2.4.6-original/receiver.h	2017-05-01 10:48:34.000000000 +0200
++++ vdr-2.4.6/receiver.h	2021-01-26 19:50:27.512032149 +0100
 @@ -85,6 +85,10 @@
                 ///< case the device is needed otherwise, so code that uses a cReceiver
                 ///< should repeatedly check whether it is still attached, and if
@@ -364,9 +367,9 @@ diff --unified vdr-2.4.1-orig/receiver.h vdr-2.4.1/receiver.h
    };
  
  #endif //__RECEIVER_H
-diff --unified vdr-2.4.1-orig/recorder.c vdr-2.4.1/recorder.c
---- vdr-2.4.1-orig/recorder.c	2020-03-01 13:03:03.223698280 +0100
-+++ vdr-2.4.1/recorder.c	2020-03-01 13:03:32.455812280 +0100
+diff --unified vdr-2.4.6-original/recorder.c vdr-2.4.6/recorder.c
+--- vdr-2.4.6-original/recorder.c	2015-09-12 16:56:15.000000000 +0200
++++ vdr-2.4.6/recorder.c	2021-01-26 19:50:27.512032149 +0100
 @@ -24,44 +24,55 @@
  cRecorder::cRecorder(const char *FileName, const cChannel *Channel, int Priority)
  :cReceiver(Channel, Priority)
@@ -457,9 +460,9 @@ diff --unified vdr-2.4.1-orig/recorder.c vdr-2.4.1/recorder.c
  }
  
  cRecorder::~cRecorder()
-diff --unified vdr-2.4.1-orig/recorder.h vdr-2.4.1/recorder.h
---- vdr-2.4.1-orig/recorder.h	2020-03-01 13:03:03.239698341 +0100
-+++ vdr-2.4.1/recorder.h	2020-03-01 13:03:32.455812280 +0100
+diff --unified vdr-2.4.6-original/recorder.h vdr-2.4.6/recorder.h
+--- vdr-2.4.6-original/recorder.h	2015-09-05 13:46:23.000000000 +0200
++++ vdr-2.4.6/recorder.h	2021-01-26 19:50:27.512032149 +0100
 @@ -16,8 +16,8 @@
  #include "ringbuffer.h"
  #include "thread.h"
@@ -481,9 +484,9 @@ diff --unified vdr-2.4.1-orig/recorder.h vdr-2.4.1/recorder.h
  public:
    cRecorder(const char *FileName, const cChannel *Channel, int Priority);
         ///< Creates a new recorder for the given Channel and
-diff --unified vdr-2.4.1-orig/ringbuffer.c vdr-2.4.1/ringbuffer.c
---- vdr-2.4.1-orig/ringbuffer.c	2020-03-01 13:03:03.219698262 +0100
-+++ vdr-2.4.1/ringbuffer.c	2020-03-01 13:03:32.455812280 +0100
+diff --unified vdr-2.4.6-original/ringbuffer.c vdr-2.4.6/ringbuffer.c
+--- vdr-2.4.6-original/ringbuffer.c	2017-03-19 13:43:36.000000000 +0100
++++ vdr-2.4.6/ringbuffer.c	2021-01-26 19:50:27.512032149 +0100
 @@ -368,6 +368,25 @@
    return NULL;
  }
@@ -510,9 +513,9 @@ diff --unified vdr-2.4.1-orig/ringbuffer.c vdr-2.4.1/ringbuffer.c
  void cRingBufferLinear::Del(int Count)
  {
    if (Count > gotten) {
-diff --unified vdr-2.4.1-orig/ringbuffer.h vdr-2.4.1/ringbuffer.h
---- vdr-2.4.1-orig/ringbuffer.h	2020-03-01 13:03:03.219698262 +0100
-+++ vdr-2.4.1/ringbuffer.h	2020-03-01 13:03:32.455812280 +0100
+diff --unified vdr-2.4.6-original/ringbuffer.h vdr-2.4.6/ringbuffer.h
+--- vdr-2.4.6-original/ringbuffer.h	2017-03-19 14:11:39.000000000 +0100
++++ vdr-2.4.6/ringbuffer.h	2021-01-26 19:50:27.512032149 +0100
 @@ -98,6 +98,12 @@
      ///< The data will remain in the buffer until a call to Del() deletes it.
      ///< Returns a pointer to the data, and stores the number of bytes
@@ -526,37 +529,30 @@ diff --unified vdr-2.4.1-orig/ringbuffer.h vdr-2.4.1/ringbuffer.h
    void Del(int Count);
      ///< Deletes at most Count bytes from the ring buffer.
      ///< Count must be less or equal to the number that was returned by a previous
-Gemeinsame Unterverzeichnisse: vdr-2.4.1-orig/symbols und vdr-2.4.1/symbols.
-diff --unified vdr-2.4.1-orig/vdr.c vdr-2.4.1/vdr.c
---- vdr-2.4.1-orig/vdr.c	2020-03-01 13:03:03.227698294 +0100
-+++ vdr-2.4.1/vdr.c	2020-03-01 13:03:32.455812280 +0100
-@@ -1343,16 +1343,23 @@
+Gemeinsame Unterverzeichnisse: vdr-2.4.6-original/symbols und vdr-2.4.6/symbols.
+Nur in vdr-2.4.6: vdr-2.4-patch-for-permashift.diff-alt.
+diff --unified vdr-2.4.6-original/vdr.c vdr-2.4.6/vdr.c
+--- vdr-2.4.6-original/vdr.c	2020-11-20 14:49:58.000000000 +0100
++++ vdr-2.4.6/vdr.c	2021-01-26 20:18:51.112869755 +0100
+@@ -1353,13 +1353,20 @@
                 key = kNone;
                 break;
            // Pausing live video:
 +          case kFastRew:
-+	      {
-+        	  // test if there's a live buffer to rewind into...
-+	          LOCK_CHANNELS_READ;
-+        	  if (cDevice::ActualDevice()->GetPreRecording(Channels->GetByNumber(cDevice::CurrentChannel())) == NULL) {
-+        		  break;
-+        	      }
-+	      }
-+        	  // fall through to pause
++               // test if there's a live buffer to rewind into...
++               LOCK_CHANNELS_READ;
++               if (cDevice::ActualDevice()->GetPreRecording(Channels->GetByNumber(cDevice::CurrentChannel())) == NULL) {
++                  break;
++                  }
++          // fall through to pause
            case kPlayPause:
            case kPause:
-                if (!cControl::Control()) {
+                if (!Control) {
                    DELETE_MENU;
--                  if (Setup.PauseKeyHandling) {
--                     if (Setup.PauseKeyHandling > 1 || Interface->Confirm(tr("Pause live video?"))) {
+                   if (Setup.PauseKeyHandling) {
+                      if (Setup.PauseKeyHandling > 1 || Interface->Confirm(tr("Pause live video?"))) {
 -                        if (!cRecordControls::PauseLiveVideo())
--                           Skins.QueueMessage(mtError, tr("No free DVB device to record!"));
--                        }
--                     }
-+                  if (Setup.PauseKeyHandling)
-+                     if (Setup.PauseKeyHandling > 1 || Interface->Confirm(tr("Pause live video?")))
 +                        if (!cRecordControls::PauseLiveVideo(int(key) == kFastRew))
-+                            Skins.QueueMessage(mtError, tr("No free DVB device to record!"));
-                   key = kNone; // nobody else needs to see this key
-                   }
-                break;
+                            Skins.QueueMessage(mtError, tr("No free DVB device to record!"));
+                         }
+                      }

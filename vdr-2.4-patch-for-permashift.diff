@@ -526,16 +526,17 @@ diff --unified vdr-2.4.6-original/ringbuffer.h vdr-2.4.6/ringbuffer.h
 diff --unified vdr-2.4.6-original/vdr.c vdr-2.4.6/vdr.c
 --- vdr-2.4.6-original/vdr.c	2020-11-20 14:49:58.000000000 +0100
 +++ vdr-2.4.6/vdr.c	2021-01-26 20:18:51.112869755 +0100
-@@ -1353,13 +1353,20 @@
+@@ -1353,13 +1353,21 @@
                 key = kNone;
                 break;
            // Pausing live video:
-+          case kFastRew:
++          case kFastRew: {
 +               // test if there's a live buffer to rewind into...
 +               LOCK_CHANNELS_READ;
 +               if (cDevice::ActualDevice()->GetPreRecording(Channels->GetByNumber(cDevice::CurrentChannel())) == NULL) {
 +                  break;
 +                  }
++               }
 +          // fall through to pause
            case kPlayPause:
            case kPause:

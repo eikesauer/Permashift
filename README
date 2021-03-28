@@ -14,7 +14,7 @@ Description:
 Permashift saves the TV channel shown live into a ring buffer in RAM.
 Thus VDR can rewind from live TV or prepend video from the past to
 an instant recording. VDR needs certain modifications (contained in
-the file vdr-patch-for-permashift.diff) to make use of the plugin.
+the files vdr-*-patch-for-permashift.diff) to make use of the plugin.
 
 Caution:
 Permashift can be configured to use lots of RAM and it can create a lot 

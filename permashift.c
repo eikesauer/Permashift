@@ -95,6 +95,8 @@ bool cPluginPermashift::StartLiveRecording(int channelNumber)
 		return false;
 	}
 
+	dsyslog("permashift: starting RAM recording\n");
+	
 	// create our receiver
 	m_bufferReceiver = new cBufferReceiver();
 
@@ -114,27 +116,37 @@ bool cPluginPermashift::StartLiveRecording(int channelNumber)
 	m_bufferReceiver->SetOwner(this);
 
 	// attach it as current receiver
+	dsyslog("permashift: attaching our receiver\n");
 	cDevice::ActualDevice()->AttachReceiver(m_bufferReceiver);
+
+	dsyslog("permashift: started live recording\n");
 
 	return true;
 }
 
 bool cPluginPermashift::StopLiveRecording()
 {
+	dsyslog("permashift: stopping live recording\n");
+	
 	// Check if it has been promoted and thus shouldn't be deleted by us.
 	if (m_bufferReceiver != NULL && !m_bufferReceiver->IsPromoted())
 	{
+		dsyslog("permashift: deleting recording buffer\n");
 		delete m_bufferReceiver;
 	}
 
 	// ... but we're "detaching" in any case
 	m_bufferReceiver = NULL;
 
+	dsyslog("permashift: stopped live recording\n");
+	
 	return true;
 }
 
 void cPluginPermashift::BufferDeleted(cBufferReceiver* callingReceiver)
 {
+	dsyslog("permashift: buffer deleted\n");
+	
 	// our buffer is about to be deleted by other means
 	// only delete it if it is really our buffer and not an old promoted one!
 	if (m_bufferReceiver == callingReceiver)

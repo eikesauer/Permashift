@@ -24,6 +24,7 @@ cBufferReceiver::cBufferReceiver() : cRecorder(NULL, NULL, -1),
  m_saveOnTheFly(false),
  m_owner(NULL)
 {
+	dsyslog("permashift: making new empty ring buffer \n");
 	m_ringBuffer = new cOverwritingRingBuffer(0);
 }
 
@@ -58,6 +59,7 @@ cBufferReceiver::~cBufferReceiver()
 bool cBufferReceiver::Allocate(uint64_t bufferSize)
 {
 	// allocate ring buffer, rounding to TS package size
+	dsyslog("permashift: allocating ring buffer memory\n");
 	return m_ringBuffer->Allocate(bufferSize / 188 * 188);
 }
 
@@ -325,7 +327,7 @@ void cBufferReceiver::Action()
 
 			if (m_bufferWriter->Finished())
 			{
-				dsyslog("permashift: RAM recording fully saved.");
+				dsyslog("permashift: RAM recording fully saved. Deleting ring buffer.");
 				delete m_ringBuffer;
 				m_ringBuffer = NULL;
 			}

@@ -20,6 +20,7 @@ m_buffer(NULL), m_bufferLength(bufferSize), m_dataStart(0), m_dataLength(0), m_d
 
 cOverwritingRingBuffer::~cOverwritingRingBuffer()
 {
+	dsyslog("permashift: OverwritingRingBuffer, free \n");
 	free(m_buffer);
 }
 
@@ -27,10 +28,12 @@ bool cOverwritingRingBuffer::Allocate(uint64_t bufferSize)
 {
 	m_bufferLength = bufferSize;
 
+	dsyslog("permashift: OverwritingRingBuffer, Allocate \n");
 	uchar* tempBuffer = (uchar*)realloc(m_buffer, m_bufferLength);
 	if (tempBuffer == NULL)
 	{
 		// if it fails, free "old" memory and report error
+		dsyslog("permashift: OverwritingRingBuffer, free due to problem\n");
 		free(m_buffer);
 		m_bufferLength = 0;
 	}

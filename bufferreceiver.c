@@ -42,12 +42,17 @@ cBufferReceiver::~cBufferReceiver()
 	}
 	if (m_bufferWriter != NULL)
 	{
+		dsyslog("permashift: deleting buffer writer \n");
 		delete m_bufferWriter;
+		dsyslog("permashift: deleted buffer writer \n");
 	}
 	if (m_ringBuffer != NULL)
 	{
+		dsyslog("permashift: deleting ring buffer \n");
 		delete m_ringBuffer;
+		dsyslog("permashift: deleted ring buffer\n");
 	}
+	dsyslog("permashift: leaving CBufferReceiver destructor\n");
 }
 
 bool cBufferReceiver::Allocate(uint64_t bufferSize)

@@ -385,8 +385,6 @@ bool cBufferReceiver::GetUsedBufferSecs(int* secs)
 		*secs = m_frameIndex.Count() / frameDetector->FramesPerSecond();
 		return true;
 	}
-	// We leave secs as it is if we haven't got aanything useful ro return.
-	// Caller might e.g. have set it to -1 to find out.
+	// We leave secs as it is if we haven't got anything useful ro return.
 	return false;
 }
-

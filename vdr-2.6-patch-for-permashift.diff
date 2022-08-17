@@ -502,6 +502,8 @@ index 06c0c9a9..4424369f 100644
                 break;
            // Pausing live video:
 +          case kFastRew:
++               if (cOsd::IsOpen())
++                  break;
 +               {
 +               // test if there's a live buffer to rewind into...
 +               LOCK_CHANNELS_READ;

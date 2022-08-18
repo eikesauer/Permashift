@@ -497,7 +497,7 @@ diff --git a/vdr.c b/vdr.c
 index 06c0c9a9..4424369f 100644
 --- a/vdr.c
 +++ b/vdr.c
-@@ -1352,13 +1352,22 @@ int main(int argc, char *argv[])
+@@ -1352,13 +1352,24 @@ int main(int argc, char *argv[])
                 key = kNone;
                 break;
            // Pausing live video:
